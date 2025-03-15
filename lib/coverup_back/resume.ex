@@ -21,7 +21,7 @@ defmodule CoverupBack.Resume do
              :achievements
            ]}
   schema "resumes" do
-    field :other, :map
+    field :other, :string
     field :user_id, :string
     field :first_name, :string
     field :last_name, :string
@@ -29,11 +29,11 @@ defmodule CoverupBack.Resume do
     field :phone, :string
     field :social, :map
     field :summary, :string
-    field :education, :map
+    field :education, :string
     field :skills, :string
-    field :work, :map
-    field :projects, :map
-    field :achievements, :map
+    field :work, :string
+    field :projects, :string
+    field :achievements, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -66,6 +66,10 @@ defmodule CoverupBack.Resume do
       %Ecto.Changeset{valid?: true} ->
         Repo.insert!(validated)
 
+      %Ecto.Changeset{valid?: false} ->
+        IO.inspect(validated.errors, label: "Resume not valid")
+        nil
+
       _ ->
         nil
     end
@@ -81,6 +85,7 @@ defmodule CoverupBack.Resume do
 
   def update(id, attrs) do
     resume = get(id)
+    IO.inspect(resume)
 
     case resume do
       nil ->
@@ -92,6 +97,10 @@ defmodule CoverupBack.Resume do
         case validated do
           %Ecto.Changeset{valid?: true} ->
             Repo.update!(validated)
+
+          %Ecto.Changeset{valid?: false} ->
+            IO.inspect(validated.errors, label: "Resume not valid")
+            nil
 
           _ ->
             nil
