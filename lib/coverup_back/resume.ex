@@ -56,7 +56,7 @@ defmodule CoverupBack.Resume do
       :achievements,
       :other
     ])
-    |> validate_required([:first_name, :last_name, :email, :phone, :summary, :skills, :user_id])
+    |> validate_required([])
   end
 
   def create(attrs) do
