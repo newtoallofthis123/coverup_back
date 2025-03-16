@@ -84,6 +84,9 @@ defmodule CoverupBackWeb.LetterController do
   end
 
   def dashboard(conn, %{"user_id" => user_id}) do
+    resume = Resume.get_by_user(user_id)
+    has_resume = if resume != nil, do: true, else: false
+
     case Letter.get_latest(user_id) do
       nil ->
         conn
@@ -96,7 +99,7 @@ defmodule CoverupBackWeb.LetterController do
         if count != nil do
           conn
           |> put_status(:ok)
-          |> json(%{letters: letters, count: count})
+          |> json(%{letters: letters, count: count, has_resume: has_resume})
         end
     end
   end
