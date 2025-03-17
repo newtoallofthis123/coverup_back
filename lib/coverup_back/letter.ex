@@ -112,6 +112,7 @@ defmodule CoverupBack.Letter do
   end
 
   def delete(id) do
-    Repo.delete(CoverupBack.Letter, id)
+    letter = get(id)
+    Repo.delete(letter)
   end
 end

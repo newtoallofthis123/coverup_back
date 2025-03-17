@@ -112,8 +112,16 @@ defmodule CoverupBackWeb.LetterController do
   end
 
   def delete(conn, %{"id" => id}) do
-    letter = Letter.delete(id)
+    case Letter.delete(id) do
+      nil ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> json(%{error: "Failed to delete letter"})
 
-    json(conn, letter)
+      _ ->
+        conn
+        |> put_status(:ok)
+        |> json(%{message: "Successfully deleted letter"})
+    end
   end
 end
